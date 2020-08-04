@@ -26,7 +26,11 @@
 	return name
 
 /datum/species/proc/get_icobase(var/mob/living/carbon/human/H, var/get_deform)
-	return (get_deform ? deform : icobase)
+	if(H.icobase == null)
+		spawn(1)
+			return H.icobase
+	else
+		return H.icobase
 
 /datum/species/proc/get_station_variant()
 	return name
@@ -77,18 +81,12 @@
 				to_chat(H, "<span class='danger'>[pick(heat_discomfort_strings)]</span>")
 
 /datum/species/proc/get_random_name(var/gender)
-	if(!name_language)
-		if(gender == FEMALE)
-			return capitalize(pick(GLOB.first_names_female)) + " " + capitalize(pick(GLOB.last_names))
-		else
-			return capitalize(pick(GLOB.first_names_male)) + " " + capitalize(pick(GLOB.last_names))
+	if(gender == FEMALE)
+		return capitalize(pick(GLOB.first_names_female)) + " " + capitalize(pick(GLOB.last_names))
+	else
+		return capitalize(pick(GLOB.first_names_male)) + " " + capitalize(pick(GLOB.last_names))
 
-	var/datum/language/species_language = all_languages[name_language]
-	if(!species_language)
-		species_language = all_languages[default_language]
-	if(!species_language)
-		return "unknown"
-	return species_language.get_random_name(gender)
+
 
 /datum/species/proc/get_vision_flags(var/mob/living/carbon/human/H)
 	return vision_flags

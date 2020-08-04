@@ -78,20 +78,9 @@ var/list/limb_icon_cache = list()
 		if(species.base_skin_colours && !isnull(species.base_skin_colours[s_base]))
 			icon_state += species.base_skin_colours[s_base]
 
-	icon_cache_key = "[icon_state]_[species ? species.name : SPECIES_HUMAN]"
 
-	if(force_icon)
-		icon = force_icon
-	else if (!dna)
-		icon = 'icons/mob/human_races/r_human.dmi'
-	else if (robotic >= ORGAN_ROBOT)
-		icon = 'icons/mob/human_races/robotic.dmi'
-	else if (status & ORGAN_MUTATED)
-		icon = species.deform
-	else if (owner && (SKELETON in owner.mutations))
-		icon = 'icons/mob/human_races/r_skeleton.dmi'
-	else
-		icon = species.get_icobase(owner)
+
+	icon = owner.icobase
 
 	mob_icon = apply_colouration(new/icon(icon, icon_state))
 
@@ -107,7 +96,7 @@ var/list/limb_icon_cache = list()
 	if(body_hair && islist(h_col) && h_col.len >= 3)
 		var/cache_key = "[body_hair]-[icon_name]-[h_col[1]][h_col[2]][h_col[3]]"
 		if(!limb_icon_cache[cache_key])
-			var/icon/I = icon(species.get_icobase(owner), "[icon_name]_[body_hair]")
+			var/icon/I = icon(owner.icobase, "[icon_name]_[body_hair]")
 			I.Blend(rgb(h_col[1],h_col[2],h_col[3]), ICON_ADD)
 			limb_icon_cache[cache_key] = I
 		mob_icon.Blend(limb_icon_cache[cache_key], ICON_OVERLAY)

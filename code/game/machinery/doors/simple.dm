@@ -219,6 +219,7 @@
 /obj/machinery/door/unpowered/simple/wood
 	icon_state = "wood"
 	color = "#824b28"
+	initial_lock_value = 1
 
 /obj/machinery/door/unpowered/simple/wood/New(var/newloc,var/material_name,var/complexity)
 	..(newloc, "wood", complexity)

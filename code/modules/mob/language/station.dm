@@ -215,6 +215,12 @@
 	else
 		return capitalize(pick(GLOB.first_names_male))
 
+/datum/species/human/roblox/get_random_name(var/gender)
+	if(gender == FEMALE)
+		return capitalize(pick(GLOB.first_names_female))
+	else
+		return capitalize(pick(GLOB.first_names_male))
+
 /datum/language/spacer
 	name = LANGUAGE_SPACER
 	desc = "A pidgin language spoken by haulers, merchants, traders, travellers, and cocky fly-boys across the galaxy."

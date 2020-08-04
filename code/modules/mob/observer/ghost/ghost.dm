@@ -547,18 +547,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Respawn"
 	set category = "OOC"
 
-	if (!(config.abandon_allowed))
-		to_chat(usr, "<span class='notice'>Respawn is disabled.</span>")
-		return
-	if (!(ticker && ticker.mode))
-		to_chat(usr, "<span class='notice'><B>You may not attempt to respawn yet.</B></span>")
-		return
-	if (ticker.mode && ticker.mode.deny_respawn)
-		to_chat(usr, "<span class='notice'>Respawn is disabled for this roundtype.</span>")
-		return
-	else if(!MayRespawn(1, config.respawn_delay))
-		return
-
+	
 	to_chat(usr, "You can respawn now, enjoy your new life!")
 	to_chat(usr, "<span class='notice'><B>Make sure to play a different character, and please roleplay correctly!</B></span>")
 	announce_ghost_joinleave(client, 0)

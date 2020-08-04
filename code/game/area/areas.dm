@@ -264,48 +264,17 @@ var/list/mob/living/forced_ambiance_list = new
 		L.update_floating()
 
 	L.lastarea = newarea
-	play_ambience(L)
+	if(oldarea != newarea)
+		L.client.ambience_playing = 0
+	if(!L.client.ambience_playing)
+		L. << sound(pick(forced_ambience), repeat = 1, wait = 0, volume = 50, channel = 3)
+		L.client.ambience_playing = 1
 
-/area/proc/play_ambience(var/mob/living/L)
-	// Ambience goes down here -- make sure to list each area seperately for ease of adding things in later, thanks! Note: areas adjacent to each other should have the same sounds to prevent cutoff when possible.- LastyScratch
-	if(!(L && L.get_preference_value(/datum/client_preference/play_ambiance) == GLOB.PREF_YES))	return
 
 
-	// If we previously were in an area with force-played ambiance, stop it.
-	if(L in forced_ambiance_list)
-		sound_to(L, sound(null, channel = 1))
-		forced_ambiance_list -= L
 
-	var/turf/T = get_turf(L)
-	var/hum = 0
-	if(!L.ear_deaf && !always_unpowered && power_environ)
-		for(var/obj/machinery/atmospherics/unary/vent_pump/vent in src)
-			if(vent.can_pump())
-				hum = 1
-				break
 
-	if(forced_ambience)
-		if(forced_ambience.len)
-			forced_ambiance_list |= L
-			L.playsound_local(T,sound(pick(forced_ambience), repeat = 1, wait = 0, volume = 25, channel = 1))
-		else
-			sound_to(L, sound(null, channel = 1))
 
-	else if(hum)
-		if(!L.client.ambience_playing)
-			L.client.ambience_playing = 1
-			L.playsound_local(T,sound('sound/ambience/NEambi.ogg', repeat = 1, wait = 0, volume = 70, channel = 2))
-	else
-		if(L.client.ambience_playing)
-			L.client.ambience_playing = 0
-			sound_to(L, sound(null, channel = 2))
-
-	
-	if(src.ambience.len && prob(75))
-		if((world.time >= L.client.played + 3 MINUTES))
-			var/sound = pick(ambience)
-			L.playsound_local(T, sound(sound, repeat = 0, wait = 0, volume = 15, channel = 1))
-			L.client.played = world.time
 
 /area/proc/gravitychange(var/gravitystate = 0)
 	has_gravity = gravitystate

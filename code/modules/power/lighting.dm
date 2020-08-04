@@ -201,19 +201,6 @@
 
 /obj/machinery/light/update_icon(var/trigger = 1)
 
-	switch(get_status())		// set icon_states
-		if(LIGHT_OK)
-			icon_state = "[base_state][on]"
-		if(LIGHT_EMPTY)
-			icon_state = "[base_state]-empty"
-			on = 0
-		if(LIGHT_BURNED)
-			icon_state = "[base_state]-burned"
-			on = 0
-		if(LIGHT_BROKEN)
-			icon_state = "[base_state]-broken"
-			on = 0
-
 	if(on)
 		use_power = 2
 

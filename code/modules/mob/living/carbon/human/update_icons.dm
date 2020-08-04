@@ -261,7 +261,7 @@ var/global/list/damage_icon_parts = list()
 	//Create a new, blank icon for our mob to use.
 	if(stand_icon)
 		qdel(stand_icon)
-	stand_icon = new(species.icon_template ? species.icon_template : 'icons/mob/human.dmi',"blank")
+	stand_icon = new('icons/mob/human.dmi',"blank")
 
 	var/g = "male"
 	if(gender == FEMALE)
@@ -307,11 +307,9 @@ var/global/list/damage_icon_parts = list()
 			icon_key += "1"
 
 	icon_key = "[icon_key][husk ? 1 : 0][fat ? 1 : 0][hulk ? 1 : 0][skeleton ? 1 : 0]"
-
 	var/icon/base_icon
-	if(human_icon_cache[icon_key])
-		base_icon = human_icon_cache[icon_key]
-	else
+	if(1==1)
+
 		//BEGIN CACHED ICON GENERATION.
 		var/obj/item/organ/external/chest = get_organ(BP_CHEST)
 		base_icon = chest.get_icon()
@@ -346,15 +344,8 @@ var/global/list/damage_icon_parts = list()
 				var/list/tone = ReadRGB(hulk_color_mod)
 				base_icon.MapColors(rgb(tone[1],0,0),rgb(0,tone[2],0),rgb(0,0,tone[3]))
 
-		//Handle husk overlay.
-		if(husk && ("overlay_husk" in icon_states(species.get_icobase(src))))
-			var/icon/mask = new(base_icon)
-			var/icon/husk_over = new(species.get_icobase(src),"overlay_husk")
-			mask.MapColors(0,0,0,1, 0,0,0,1, 0,0,0,1, 0,0,0,1, 0,0,0,0)
-			husk_over.Blend(mask, ICON_ADD)
-			base_icon.Blend(husk_over, ICON_OVERLAY)
 
-		human_icon_cache[icon_key] = base_icon
+
 
 	//END CACHED ICON GENERATION.
 	stand_icon.Blend(base_icon,ICON_OVERLAY)
@@ -438,29 +429,29 @@ var/global/list/damage_icon_parts = list()
 	..()
 	if(transforming || QDELETED(src))		return
 
-	update_mutations(0)
-	update_body(0)
-	update_skin(0)
-	update_underwear(0)
-	update_hair(0)
-	update_inv_w_uniform(0)
-	update_inv_wear_id(0)
-	update_inv_gloves(0)
-	update_inv_glasses(0)
-	update_inv_ears(0)
-	update_inv_shoes(0)
-	update_inv_s_store(0)
-	update_inv_wear_mask(0)
-	update_inv_head(0)
-	update_inv_belt(0)
-	update_inv_back(0)
+	update_mutations(1)
+	update_body(1)
+	update_skin(1)
+	update_underwear(1)
+	update_hair(1)
+	update_inv_w_uniform(1)
+	update_inv_wear_id(1)
+	update_inv_gloves(1)
+	update_inv_glasses(1)
+	update_inv_ears(1)
+	update_inv_shoes(1)
+	update_inv_s_store(1)
+	update_inv_wear_mask(1)
+	update_inv_head(1)
+	update_inv_belt(1)
+	update_inv_back(1)
 	update_inv_wear_suit(0)
-	update_inv_r_hand(0)
-	update_inv_l_hand(0)
-	update_inv_handcuffed(0)
-	update_inv_pockets(0)
-	update_fire(0)
-	update_surgery(0)
+	update_inv_r_hand(1)
+	update_inv_l_hand(1)
+	update_inv_handcuffed(1)
+	update_inv_pockets(1)
+	update_fire(1)
+	update_surgery(1)
 	UpdateDamageIcon()
 	update_icons()
 	//Hud Stuff

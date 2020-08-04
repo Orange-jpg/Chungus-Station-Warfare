@@ -87,29 +87,11 @@ var/global/datum/controller/occupations/job_master
 		Debug("Running AR, Player: [player], Rank: [rank], LJ: [latejoin]")
 		if(player && player.mind && rank)
 			var/datum/job/job = GetJob(rank)
-			if(!job)
-				return 0
-			if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
-				return 0
-			if(job.sex_lock && player.client.prefs.gender != job.sex_lock)
-				return 0
-			if(jobban_isbanned(player, rank))
-				return 0
-			if(!job.player_old_enough(player.client))
-				return 0
-			if(job.is_restricted(player.client.prefs))
-				return 0
-
-			var/position_limit = job.total_positions
-			if(!latejoin)
-				position_limit = job.spawn_positions
-			if((job.current_positions < position_limit) || position_limit == -1)
-				Debug("Player: [player] is now Rank: [rank], JCP:[job.current_positions], JPL:[position_limit]")
-				player.mind.assigned_role = rank
-				player.mind.role_alt_title = GetPlayerAltTitle(player, rank)
-				unassigned -= player
-				job.current_positions++
-				return 1
+			player.mind.assigned_role = rank
+			player.mind.role_alt_title = GetPlayerAltTitle(player, rank)
+			unassigned -= player
+			job.current_positions++
+			return 1
 		Debug("AR has failed, Player: [player], Rank: [rank]")
 		return 0
 
@@ -625,7 +607,7 @@ var/global/datum/controller/occupations/job_master
 			tmp_str += "HIGH=[level1]|MEDIUM=[level2]|LOW=[level3]|NEVER=[level4]|BANNED=[level5]|YOUNG=[level6]|-"
 			feedback_add_details("job_preferences",tmp_str)
 
-	
+
 	proc/SetCombatMusic(var/mob/living/carbon/human/H, var/rank)
 		switch(rank)
 			if("Count" || "Viscount")
@@ -635,7 +617,7 @@ var/global/datum/controller/occupations/job_master
 			if("Supreme Arbiter" || "Arbiter")
 				H.combat_music = GLOB.religion_combat_music
 			if("Jester")
-				H.combat_music = GLOB.jester_combat_music 
+				H.combat_music = GLOB.jester_combat_music
 			else
 				H.combat_music = GLOB.generic_combat_music
 /**

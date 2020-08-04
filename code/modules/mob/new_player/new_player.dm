@@ -174,18 +174,11 @@
 		if(!config.enter_allowed)
 			to_chat(usr, "<span class='notice'>There is an administrative lock on entering the game!</span>")
 			return
-		if(ticker && ticker.mode && ticker.mode.explosion_in_progress)
-			to_chat(usr, "<span class='danger'>The [station_name()] is currently exploding. Joining would go poorly.</span>")
-			return
-		if(client.prefs.real_name in GLOB.player_name_list)
-			to_chat(usr, "<span class='danger'>Our records show we already employ a [name].  Please change your name to join the crew.</span>")
-			return
-		
-		var/datum/species/S = all_species[client.prefs.species]
-		if(!check_species_allowed(S))
-			return 0
 
-		AttemptLateSpawn(job, client.prefs.spawnpoint)
+
+
+
+		AttemptLateSpawn(job)
 		return
 
 	if(href_list["privacy_poll"])
@@ -307,47 +300,28 @@
 	if(client)
 		return client.prefs.char_rank
 
-/mob/new_player/proc/AttemptLateSpawn(var/datum/job/job, var/spawning_at)
+/mob/new_player/proc/AttemptLateSpawn(var/datum/job/job)
 	if(src != usr)
 		return 0
 	if(!ticker || ticker.current_state != GAME_STATE_PLAYING)
 		to_chat(usr, "<span class='warning'>The round is either not ready, or has already finished...</span>")
 		return 0
-	if(!config.enter_allowed)
-		to_chat(usr, "<span class='notice'>There is an administrative lock on entering the game!</span>")
-		return 0
+	var/turf/spawn_turf
+	var/obj/S = job_master.get_roundstart_spawnpoint(job.title)
+	spawn_turf = get_turf(S)
 
-	if(!IsJobAvailable(job))
-		alert("[job.title] is not available. Please try another.")
-		return 0
-	if(job.is_restricted(client.prefs, src))
-		return
 
-	var/datum/spawnpoint/spawnpoint = job_master.get_spawnpoint_for(client, job.title)
-	var/turf/spawn_turf = pick(spawnpoint.turfs)
-	if(job.latejoin_at_spawnpoints)
-		var/obj/S = job_master.get_roundstart_spawnpoint(job.title)
-		spawn_turf = get_turf(S)
-	var/radlevel = radiation_repository.get_rads_at_turf(spawn_turf)
-	var/airstatus = IsTurfAtmosUnsafe(spawn_turf)
-	if(airstatus || radlevel > 0 )
-		var/reply = alert(usr, "Warning. Your selected spawn location seems to have unfavorable conditions. \
-		You may die shortly after spawning. \
-		Spawn anyway? More information: [airstatus] Radiation: [radlevel] Bq", "Atmosphere warning", "Abort", "Spawn anyway")
-		if(reply == "Abort")
-			return 0
-		else
-			// Let the staff know, in case the person complains about dying due to this later. They've been warned.
-			log_and_message_admins("User [src] spawned at spawn point with dangerous atmosphere.")
-
-		// Just in case someone stole our position while we were waiting for input from alert() proc
-		if(!IsJobAvailable(job))
-			to_chat(src, alert("[job.title] is not available. Please try another."))
-			return 0
 
 	job_master.AssignRole(src, job.title, 1)
 
-	var/mob/living/character = create_character(spawn_turf)	//creates the human and transfers vars and mind
+
+	var/mob/living/carbon/human/character
+	var/sprite
+	if(job.title == "Noob")
+		sprite = 'icons/mob/human_races/r_roblox.dmi'
+	else if(job.title == "Chungus")
+		sprite = 'icons/mob/human_races/r_chungus.dmi'
+	character = create_character(spawn_turf,sprite)	//creates the human and transfers vars and mind
 	if(!character)
 		return 0
 
@@ -355,37 +329,12 @@
 	equip_custom_items(character)
 
 	// AIs don't need a spawnpoint, they must spawn at an empty core
-	if(character.mind.assigned_role == "AI")
-
-		character = character.AIize(move=0) // AIize the character, but don't move them yet
-
-			// IsJobAvailable for AI checks that there is an empty core available in this list
-		var/obj/structure/AIcore/deactivated/C = empty_playable_ai_cores[1]
-		empty_playable_ai_cores -= C
-
-		character.forceMove(C.loc)
-		var/mob/living/silicon/ai/A = character
-		A.on_mob_init()
-
-		AnnounceCyborg(character, job.title, "has been downloaded to the empty core in \the [character.loc.loc]")
-		ticker.mode.handle_latejoin(character)
-
-		qdel(C)
-		qdel(src)
-		return
 
 	ticker.mode.handle_latejoin(character)
 	GLOB.universe.OnPlayerLatejoin(character)
-	if(job_master.ShouldCreateRecords(job.title))
-		if(character.mind.assigned_role != "Cyborg")
-			CreateModularRecord(character)
-			ticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
-			AnnounceArrival(character, job, spawnpoint.msg)
-		else
-			AnnounceCyborg(character, job, spawnpoint.msg)
-		matchmaker.do_matchmaking()
 	log_and_message_admins("has joined the round as [character.mind.assigned_role].", character)
 	qdel(src)
+	character.regenerate_icons()
 
 
 /mob/new_player/proc/AnnounceCyborg(var/mob/living/character, var/rank, var/join_message)
@@ -417,7 +366,7 @@
 	dat += "Choose from the following open/valid positions:<br>"
 	dat += "<a href='byond://?src=\ref[src];invalid_jobs=1'>[show_invalid_jobs ? "Hide":"Show"] unavailable jobs.</a><br>"
 	dat += "<table>"
-	
+
 	for(var/datum/job/job in job_master.occupations)
 		//Suprisingly, get_announcement_frequency is perfect for getting the name from the depratment_flag var
 		if(department != get_department_names(job))
@@ -447,48 +396,27 @@
 	popup.set_content(dat)
 	popup.open()
 
-/mob/new_player/proc/create_character(var/turf/spawn_turf)
+
+/mob/new_player/proc/create_character(var/turf/spawn_turf, var/sprite)
 	spawning = 1
 	close_spawn_windows()
-
 	var/mob/living/carbon/human/new_character
 
-	var/datum/species/chosen_species
+
 	GLOB.player_name_list |= client.prefs.real_name
-	if(client.prefs.species)
-		chosen_species = all_species[client.prefs.species]
+
 
 	if(!spawn_turf)
 		var/datum/spawnpoint/spawnpoint = job_master.get_spawnpoint_for(client, get_rank_pref())
 		spawn_turf = pick(spawnpoint.turfs)
 
-	if(chosen_species)
-		if(!check_species_allowed(chosen_species))
-			spawning = 0 //abort
-			return null
-		new_character = new(spawn_turf, chosen_species.name)
-		if(chosen_species.has_organ[BP_POSIBRAIN] && client && client.prefs.is_shackled)
-			var/obj/item/organ/internal/posibrain/B = new_character.internal_organs_by_name[BP_POSIBRAIN]
-			if(B)	B.shackle(client.prefs.get_lawset())
-
 	if(!new_character)
-		new_character = new(spawn_turf)
+		new_character = new(spawn_turf,sprite)
 
 	new_character.lastarea = get_area(spawn_turf)
 
-	for(var/lang in client.prefs.alternate_languages)
-		var/datum/language/chosen_language = all_languages[lang]
-		if(chosen_language)
-			var/is_species_lang = (chosen_language.name in new_character.species.secondary_langs)
-			if(is_species_lang || ((!(chosen_language.flags & RESTRICTED) || has_admin_rights()) && is_alien_whitelisted(src, chosen_language)))
-				new_character.add_language(lang)
 
-	if(ticker.random_players)
-		new_character.gender = pick(MALE, FEMALE)
-		client.prefs.real_name = random_name(new_character.gender)
-		client.prefs.randomize_appearance_and_body_for(new_character)
-	else
-		client.prefs.copy_to(new_character)
+
 
 	sound_to(src, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))// MAD JAMS cant last forever yo
 
@@ -502,10 +430,6 @@
 	new_character.dna.ready_dna(new_character)
 	new_character.dna.b_type = client.prefs.b_type
 	new_character.sync_organ_dna()
-	if(client.prefs.disabilities)
-		// Set defer to 1 if you add more crap here so it only recalculates struc_enzymes once. - N3X
-		new_character.dna.SetSEState(GLOB.GLASSESBLOCK,1,0)
-		new_character.disabilities |= NEARSIGHTED
 
 	// Give them their cortical stack if we're using them.
 	if(config && config.use_cortical_stacks && client && client.prefs.has_cortical_stack /*&& new_character.should_have_organ(BP_BRAIN)*/)

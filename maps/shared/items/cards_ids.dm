@@ -11,7 +11,7 @@
 
 /obj/item/weapon/card/id/dreyfus/cargo/ouvrier
 	icon_state = "id_qm"
-	job_access_type = /datum/job/ouvrier
+
 
 
 /obj/item/weapon/card/id/dreyfus/gold
@@ -54,4 +54,3 @@
 /obj/item/weapon/card/id/arbiter
 	desc = "A card used by arbiters to get around."
 	icon_state = "id_arbiter"
-	job_access_type = /datum/job/arbiter

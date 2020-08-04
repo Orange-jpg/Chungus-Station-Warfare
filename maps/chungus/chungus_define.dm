@@ -7,9 +7,9 @@
 	lobby_icon = 'maps/chungus/lobby.dmi'
 
 	station_levels = list(1)
-	contact_levels = list(1
+	contact_levels = list(1)
 	player_levels = list(1)
-	accessible_z_levels = list("1"=1,"2"=1,"3"=1,"4"=1,"6"=90) //Percentage of chance to get on this or that Z level as you drift through space.
+	accessible_z_levels = list("1"=100) //Percentage of chance to get on this or that Z level as you drift through space.
 
 	//allowed_spawns = list("`")
 

@@ -17,8 +17,8 @@
 	slot_flags = SLOT_BELT
 	block_chance = 30
 	force = 10
-	var/stunforce = 3 //10 was way to high
-	var/agonyforce = 20
+	var/stunforce = 1 //10 was way to high
+	var/agonyforce = 10
 
 /obj/item/weapon/melee/classic_baton/attack(mob/M as mob, mob/living/user as mob)
 	if ((CLUMSY in user.mutations) && prob(50))

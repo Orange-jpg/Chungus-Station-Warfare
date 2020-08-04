@@ -4,8 +4,9 @@
 	name = "\improper Thunderdome"
 	icon_state = "thunder"
 	requires_power = 0
+	dynamic_light
 	sound_env = LARGE_ENCLOSED
-	ambience = list('sound/ambience/halo.ogg')
+	forced_ambience = list('sound/ambience/halo.ogg')
 
 /area/townhall/chungus
 	name = "\improper Chungus TownHall"
@@ -21,5 +22,6 @@
 	name = "\improper Battlefield"
 	icon_state = "thunder"
 	requires_power = 0
+	dynamic_lighting = 0
 	sound_env = ARENA
-	ambience = list('sound/ambience/war.ogg')
+	forced_ambience = list('sound/ambience/war.ogg')

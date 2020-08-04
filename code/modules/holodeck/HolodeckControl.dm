@@ -297,11 +297,7 @@
 	else
 		linkedholodeck.forced_ambience = list()
 
-	for(var/mob/living/M in mobs_in_area(linkedholodeck))
-		if(M.mind)
-			linkedholodeck.play_ambience(M)
 
-	linkedholodeck.sound_env = A.sound_env
 
 	spawn(30)
 		for(var/obj/effect/landmark/L in linkedholodeck)

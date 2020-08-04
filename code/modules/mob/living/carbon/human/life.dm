@@ -77,9 +77,9 @@
 		handle_pain()
 
 		handle_medical_side_effects()
-		
+
 		handle_blood_pools()
-		
+
 		if(!client && !mind)
 			species.handle_npc(src)
 
@@ -746,7 +746,7 @@
 			if (chem_effects[CE_PAINKILLER] > 100)
 				healths.overlays.Cut()
 				healths.icon_state = "health_numb"
-			
+
 			else if(using_alt_hud)//If we're using Lunahud we want the lunahud health face.
 				var/mhealth = (getBruteLoss() + getFireLoss())
 				switch(mhealth)
@@ -910,9 +910,6 @@
 		if(T.get_lumcount() <= LIGHTING_SOFT_THRESHOLD)
 			playsound_local(src,pick(GLOB.scarySounds),50, 1, -1)
 
-	var/area/A = get_area(src)
-	if(client && world.time >= client.played + 600)
-		A.play_ambience(src)
 	if(stat == UNCONSCIOUS && world.time - l_move_time < 5 && prob(10))
 		to_chat(src,"<span class='notice'>You feel like you're [pick("moving","flying","floating","falling","hovering")].</span>")
 

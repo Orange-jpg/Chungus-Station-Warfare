@@ -402,7 +402,7 @@ var/const/NO_EMAG_ACT = -50
 
 /obj/item/weapon/card/id/civilian/jester
 	icon_state = "jester"
-	job_access_type = /datum/job/jester
+
 
 /obj/item/weapon/card/id/civilian/bartender
 	job_access_type = /datum/job/bartender

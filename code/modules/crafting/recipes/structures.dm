@@ -20,10 +20,6 @@
 	tools = list(/obj/item/weapon/weldingtool = 1)
 	time = 60
 
-/datum/crafting_recipe/structure/railing
-	name = "Wooden railing"
-	result = list(/obj/structure/railing = 1)
-	parts = list(/obj/item/stack/material/wood/ = 5)
 
 /datum/crafting_recipe/wall_girders
 	name = "wall girders"

@@ -547,16 +547,16 @@
 			if(!ishuman(usr))	return
 			usr << 'sound/effects/ui_toggle.ogg'
 			var/mob/living/carbon/human/C = usr
-			var/song = C.combat_music
+		//	var/song = null
 			if(C.combat_mode)
 				C.combat_mode = 0
 				C.combat_icon.icon_state = "combat0"
 
-				sound_to(C, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))
+			//	sound_to(C, sound(null, repeat = 0, wait = 0, volume = 85, channel = 3))
 			else
 				C.combat_mode = 1
 				C.combat_icon.icon_state = "combat1"
-				sound_to(C, sound(song, repeat = 1, wait = 0, volume = 50, channel = 1))		
+			//	sound_to(C, sound(song, repeat = 1, wait = 0, volume = 50, channel = 3))
 
 		if("dodge intent")
 			if(ishuman(usr))

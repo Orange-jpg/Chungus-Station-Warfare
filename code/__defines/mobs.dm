@@ -282,6 +282,8 @@
 #define SPECIES_BOGANI "Bogani"
 #define SPECIES_EGYNO "Egyno"
 
+
+
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1
 #define SURGERY_RETRACTED 2

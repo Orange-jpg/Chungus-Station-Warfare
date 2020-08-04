@@ -36,7 +36,7 @@
 	my_client = client
 	set_sight(sight|SEE_TURFS)
 	GLOB.player_list |= src
-
+	client.mouse_pointer_icon = 'icons/pointer.dmi'
 	new_player_panel()
 	spawn(40)
 		if(client)

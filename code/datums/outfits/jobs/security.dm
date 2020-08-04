@@ -1,7 +1,7 @@
 /decl/hierarchy/outfit/job/security
 	hierarchy_type = /decl/hierarchy/outfit/job/security
-	glasses = /obj/item/clothing/glasses/sunglasses/sechud
-	l_ear = /obj/item/device/radio/headset/headset_sec
+	glasses = /obj/item/clothing/glasses/sunglasses
+	l_ear = /obj/item/device/radio/headset
 	gloves = /obj/item/clothing/gloves/thick
 	shoes = /obj/item/clothing/shoes/jackboots
 	backpack_contents = list(/obj/item/weapon/handcuffs = 1)
@@ -53,3 +53,5 @@
 	r_pocket = /obj/item/weapon/handcuffs
 	id_type = /obj/item/weapon/card/id/security
 	pda_type = /obj/item/device/pda/security
+
+

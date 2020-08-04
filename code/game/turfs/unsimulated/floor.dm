@@ -19,3 +19,14 @@
 
 /turf/unsimulated/floor/shuttle_ceiling
 	icon_state = "reinforced"
+
+
+/turf/unsimulated/floor/chungus
+	name = "Chungus Floor"
+	icon = 'icons/turf/floors.dmi'
+	icon_state = "chungus"
+
+/turf/unsimulated/floor/noob
+	name = "Noob Floor"
+	icon = 'icons/turf/floors.dmi'
+	icon_state = "noob"

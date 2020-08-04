@@ -16,7 +16,6 @@
 	var/move_delay		= 1
 	var/moving			= null
 	var/adminobs		= null
-
 	var/adminhelped = 0
 
 	var/staffwarn = null

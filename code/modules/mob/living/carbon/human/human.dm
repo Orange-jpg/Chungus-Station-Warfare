@@ -4,18 +4,23 @@
 	voice_name = "unknown"
 	icon = 'icons/mob/human.dmi'
 	icon_state = "body_m_s"
-
+	var/icobase = 'icons/mob/human_races/r_human.dmi'
 	var/list/hud_list[10]
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/obj/item/weapon/rig/wearing_rig // This is very not good, but it's much much better than calling get_rig() every update_canmove() call.
 	var/combat_music = 'sound/music/bloodlust.ogg'
+	var/team
 
-/mob/living/carbon/human/New(var/new_loc, var/new_species = null)
+/mob/living/carbon/human/proc/set_sprite(var/n)
+	icobase = n
+
+
+/mob/living/carbon/human/New(var/new_loc, var/sprite ,var/new_species = null)
 
 	if(!dna)
 		dna = new /datum/dna(null)
 		// Species name is handled by set_species()
-
+	set_sprite(sprite)
 	if(!species)
 		if(new_species)
 			set_species(new_species,1)
@@ -1363,7 +1368,8 @@
 		gender = species.genders[1]
 
 	icon_state = lowertext(species.name)
-
+	if(icobase == null)
+		sleep(10)
 	species.create_organs(src)
 	species.handle_post_spawn(src)
 	maxHealth = species.total_health
