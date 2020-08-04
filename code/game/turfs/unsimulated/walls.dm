@@ -10,8 +10,6 @@
 	desc= "wall made out of pure chungus"
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "chungus"
-	opacity = 1
-	density = 1
 
 
 /turf/unsimulated/wall/noob
@@ -19,12 +17,21 @@
 	desc = "wall made out of pure noob"
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "noob"
-	opacity = 1
-	density = 1
 
 
 
+/turf/unsimulated/wall/fakeglass/chung
+	name = "Chungium Window"
+	desc= "Windows made out of pure chungus"
+	icon = 'icons/turf/walls.dmi'
+	icon_state = "chungus_w"
 
+
+/turf/unsimulated/wall/fakeglass/noob
+	name = "NOOBium Window"
+	desc = "Window made out of pure noob"
+	icon = 'icons/turf/walls.dmi'
+	icon_state = "noob_w"
 
 
 /turf/unsimulated/wall/fakeglass
@@ -45,7 +52,7 @@ obj/machinery/light/chungus_shrine
 	on = 1
 	light_range = 100
 	light_power = 100
-	layer = 3
+	layer = 5
 obj/machinery/light/noob_shrine
 	name = "Shrine to the holy noob"
 	desc = "wall made out of pure noob"
@@ -54,7 +61,7 @@ obj/machinery/light/noob_shrine
 	on = 1
 	light_range = 100
 	light_power = 100
-	layer = 3
+	layer = 5
 
 
 
@@ -76,7 +83,8 @@ obj/selfdestruct/noob
 obj/selfdestruct/attack_hand(mob/living/carbon/human/user)
 	if(user.team == friendly)
 		to_chat(user,"i won't blow up my own townhall")
-	else
+	else if(do_after(user, 10 SECONDS))
+		visible_message("<span class='danger'>\The [src] attempts to activate \the button!</span>")
 		to_chat(world, "<br><br><br><H1> [friendly] BASE HAS BEEN BLOWN UP BY [user]</H1>")
 		SSticker.force_ending = 1
 		ticker.current_state = GAME_STATE_FINISHED

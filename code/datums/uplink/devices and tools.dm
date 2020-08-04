@@ -51,10 +51,6 @@
 	item_cost = 20
 	path = /obj/item/device/encryptionkey/binary
 
-/datum/uplink_item/item/tools/emag
-	name = "Cryptographic Sequencer"
-	item_cost = 24
-	path = /obj/item/weapon/card/emag
 
 /datum/uplink_item/item/tools/hacking_tool
 	name = "Door Hacking Tool"
