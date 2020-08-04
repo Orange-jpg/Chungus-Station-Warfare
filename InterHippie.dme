@@ -2631,6 +2631,8 @@
 #include "maps\away_sites_testing\away_sites_testing_define.dm"
 #include "maps\chungus\chungus.dm"
 #include "maps\chungus\chungus_define.dm"
+#include "maps\chungus\Chungus warfare 2.dmm"
+#include "maps\chungus\Chungus warfare but better.dmm"
 #include "maps\chungus\chungus.dmm"
 #include "maps\dreyfus\structures\gym.dm"
 #include "maps\overmap_example\overmap_example_define.dm"
