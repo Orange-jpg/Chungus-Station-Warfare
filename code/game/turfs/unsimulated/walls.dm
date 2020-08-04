@@ -72,12 +72,8 @@ obj/selfdestruct
 	icon_state = "butt"
 	var/friendly
 obj/selfdestruct/chungus
-	name = "Self-Destruct Button"
-	desc = "press this to blow up the townhall"
 	friendly = "Chungus"
 obj/selfdestruct/noob
-	name = "Self-Destruct Button"
-	desc = "press this to blow up the townhall"
 	friendly = "Noob"
 
 obj/selfdestruct/attack_hand(mob/living/carbon/human/user)
@@ -92,5 +88,3 @@ obj/selfdestruct/attack_hand(mob/living/carbon/human/user)
 		spawn
 			ticker.declare_completion()
 		log_and_message_admins("initiated a game ending.")
-		sleep(250)
-		world.Reboot()

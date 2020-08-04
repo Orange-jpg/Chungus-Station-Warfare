@@ -338,7 +338,7 @@ var/global/datum/controller/gameticker/ticker
 
 
 			spawn(50)
-				if(config.allow_map_switching && config.auto_map_vote && GLOB.all_maps.len > 1)
+				if(config.auto_map_vote && GLOB.all_maps.len > 1)
 					vote.automap()
 					while(vote.time_remaining)
 						sleep(50)
